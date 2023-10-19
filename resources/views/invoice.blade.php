@@ -1,49 +1,60 @@
-<!doctype html>
+<!-- @php
+    function rupiah($angka){
+        $hasil_rupiah = "Rp" . number_format($angka,0,',','.');
+        return $hasil_rupiah;
+    }
+@endphp -->
+
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>e-Receipt #{{ $transactions[0]->order_id }}</title>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 </head>
-<body style="background: white">
+<body>
     <div id="app">
-    
         <main class="py-4">
             <div class="card">
-                <div class="card-header">
-                    <h3>e-Receipt #{{$transactions[0]->order_id}}</h3>
-                    <span>#{{ $transactions[0]->created }}</span>
+                <div class="card-header px-5">
+                    <h3 style="font-size: 50px">e-Receipt #{{ $transactions[0]->order_id }}</h3>
+                    <span class="text-secondary" style="font-size: 30px">#{{ $transactions[0]->created_at }}</span>
                 </div>
-                <div class="card-body">
-                    @foreach ($transactions as $transaction )
-                    <div class="row">
-                        <div class="col-2">
-                            {{ $transaction->quantity }} x 
+                <div class="card-body px-5">
+                    @foreach ($transactions as $transaction)
+                    <div class="row" style="font-size: 30px">
+                        <div class="col">
+                            {{ $transaction->product->name }}
                         </div>
-                        <div class="col-10 text-end">
-                            {{ $transaction->price }}
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-2">
+                                    {{ $transaction->quantity }} x
+                                </div>
+                                <div class="col-10 text-end">
+                                    {{ rupiah($transaction->price) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                        
                     @endforeach
                 </div>
-                <div class="card-footer">
-                    <div class="">
-                        <div class="row">
+                <div class="card-footer px-5">
+                    <div style="font-size: 50px">
+                        <div class="row">   
+                            <div class="col">
+                                Total:
+                            </div>
                             <div class="col text-end">
-                                {{ $total_biaya }}
+                                {{ rupiah($total_biaya) }}
                             </div>
                         </div>
                     </div>
